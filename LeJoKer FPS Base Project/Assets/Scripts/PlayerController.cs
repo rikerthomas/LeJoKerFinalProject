@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public float jumpHeight = 3f;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,11 +29,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        
 
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
+
+        
 
         movementX = Input.GetAxis("Horizontal");
         movementZ = Input.GetAxis("Vertical");

@@ -15,6 +15,9 @@ public class FreezeGun : MonoBehaviour
     public float flashToDissappear = 1.0f;
     public float ftimeToDisappear = 0.01f;
     public bool isShooting;
+    public AudioSource audioSource1;
+
+    public AudioClip clip1;
 
 
     public float chargeTime = 3.0f;
@@ -34,7 +37,11 @@ public class FreezeGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource1 = GetComponent<AudioSource>();
+
         currentAmmo = maxAmmo;
+        audioSource1.clip = clip1;
+
     }
 
     // Update is called once per frame
@@ -42,10 +49,9 @@ public class FreezeGun : MonoBehaviour
     {
         Fire();
 
-
+        TimerIncrease();
 
         GunShoot();
-
 
 
 
@@ -66,6 +72,7 @@ public class FreezeGun : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1") && !isShooting)
         {
+            audioSource1.PlayOneShot(clip1);
             Rigidbody bulletClone = (Rigidbody)Instantiate(bullet, barrel.position, transform.rotation);
             bulletClone.AddForce(transform.forward * bulletSpeed);
             StartCoroutine(DisappearCoroutine(bulletClone.gameObject));
@@ -74,23 +81,26 @@ public class FreezeGun : MonoBehaviour
         }
     }
 
-    void GunShoot()
+    public void TimerIncrease()
     {
-        if (Input.GetButton("Fire2"))
+        if(Input.GetKey(KeyCode.Mouse1))
         {
             charge += Time.deltaTime;
 
-            if (Input.GetButtonUp("Fire2"))
-            {
-                charge = 0;
 
-            }
-            if (charge >= chargeTime && !isShooting)
+        }
+    }
+
+    void GunShoot()
+    {
+        if (charge >= chargeTime)
             {
-                if (currentAmmo <= 0)
+
+                if(currentAmmo <= 0)
                 {
-                    return;
+                return;
                 }
+                audioSource1.PlayOneShot(clip1);
                 currentAmmo--;
                 Rigidbody bulletClone = (Rigidbody)Instantiate(bullet2, barrel.position, transform.rotation);
                 bulletClone.AddForce(transform.forward * bulletSpeed);
@@ -99,7 +109,7 @@ public class FreezeGun : MonoBehaviour
                 GameObject flashClone = (GameObject)Instantiate(flash, barrel.position, transform.rotation);
                 StartCoroutine(DisappearflashCoroutine(flashClone.gameObject));
             }
-        }
+        
     }
 
     private IEnumerator DisappearCoroutine(GameObject bulletToDisappear)
