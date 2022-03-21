@@ -17,14 +17,19 @@ public class SimpleEnemyMove : MonoBehaviour
     public float range = 100f;
 
     public bool isFrozen;
+    public bool isFrozen2;
 
     public float freezeTimer = 0.0f;
     public float unFreeze = 10f;
 
+    public GameObject Player;
+    public float enemyDistance = 4.0f;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         enemy = GetComponent<Rigidbody>();
     }
     private void Update()
@@ -44,14 +49,36 @@ public class SimpleEnemyMove : MonoBehaviour
             
 
         }
+
+        if (isFrozen == true)
+        {
+            animator.SetBool("isMoving", false);
+        }
+        if (isFrozen == false)
+        {
+            animator.SetBool("isMoving", true);
+        }
+        if(isFrozen2 == true)
+        {
+            animator.SetBool("isMoving", false);
+        }
     }
     // Update is called once per frame
     void FixedUpdate()
     {
         //if the enemy is hit by the bullet then their movement will stop. If their movement is stopped, a timer will tick up,
         //and if the timer hits enough seconds, the enemy will regain movement. timer++
-        //if boject is hit again, it will infreeze itself. 
-        agent.SetDestination(player.position * speed * Time.deltaTime);
+        //if boject is hit again, it will unfreeze itself. 
+        float distance = Vector3.Distance(transform.position, Player.transform.position);
+        //If the enemy is less than 4 spaces away from the player, the enemy will change color to blue, to indicate chasing, and will chase the player. 
+        if (distance < enemyDistance)
+        {
+            //This brings the enemy towards the player
+            Vector3 dirToPlayer = transform.position - Player.transform.position;
+            Vector3 newPos = transform.position - dirToPlayer;
+            agent.SetDestination(newPos);
+            GetComponent<MeshRenderer>().material.color = Color.blue; //sets the enemy color to blue to indicate that their state has changed. 
+        }
     }
 
 
@@ -71,6 +98,8 @@ public class SimpleEnemyMove : MonoBehaviour
             agent.speed = 0f;
             agent.angularSpeed = 0f;
             enemy.isKinematic = true;
+            isFrozen2 = true;
         }
+
     }
 }
