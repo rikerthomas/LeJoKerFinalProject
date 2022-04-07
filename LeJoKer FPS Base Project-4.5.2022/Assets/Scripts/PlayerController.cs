@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public GameObject player;
@@ -18,11 +19,16 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public float jumpHeight = 3f;
     public ParticleSystem particles;
+    public int enemyHits;
+    public int bulletHits;
+    public ParticleSystem bulletHit;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        bulletHits = 0;
+        enemyHits = 0;
         particles = GetComponent<ParticleSystem>();
         characterController = GetComponent<CharacterController>();
     }
@@ -31,7 +37,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        
+        if(bulletHits >= 15)
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
+        }
+        if(enemyHits >= 10)
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
+        }
 
         if (isGrounded && velocity.y < 0)
         {
@@ -61,11 +76,23 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("enemy"))
         {
+            bulletHit.Stop();
             particles.Play();
         }
         if (collision.gameObject.CompareTag("enemy1"))
         {
+            bulletHit.Stop();
+            enemyHits++;
             particles.Play();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("EnemyBullet"))
+        {
+            bulletHit.Play();
+            bulletHits++;
         }
     }
 }

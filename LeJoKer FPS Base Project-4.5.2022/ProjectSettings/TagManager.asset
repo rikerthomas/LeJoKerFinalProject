@@ -10,6 +10,7 @@ TagManager:
   - FxTemporaire
   - Wall
   - enemy1
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
