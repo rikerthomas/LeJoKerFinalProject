@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2823633857676518178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6556448878158931062}
+  m_Layer: 0
+  m_Name: barrel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6556448878158931062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2823633857676518178}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.13625336, y: 1.495, z: 1.893}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children: []
+  m_Father: {fileID: 4371226022526673043}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4370549514784177455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9,7 +39,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1508817308227530, guid: b09191006fa14d64d97df0de8b286d1f, type: 3}
       propertyPath: m_Name
-      value: Robo1
+      value: Robo1 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4214740600626620, guid: b09191006fa14d64d97df0de8b286d1f, type: 3}
       propertyPath: m_RootOrder
@@ -78,6 +108,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1508817308227530, guid: b09191006fa14d64d97df0de8b286d1f, type: 3}
   m_PrefabInstance: {fileID: 4370549514784177455}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &4371226022526673043 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4214740600626620, guid: b09191006fa14d64d97df0de8b286d1f, type: 3}
+  m_PrefabInstance: {fileID: 4370549514784177455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &4464209228143914589 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 95491499780641650, guid: b09191006fa14d64d97df0de8b286d1f, type: 3}
@@ -133,3 +168,21 @@ MonoBehaviour:
   isFrozen2: 0
   freezeTimer: 0
   unFreeze: 10
+--- !u!114 &815804224292481687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369076450998315749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dba441c4acd7be44b1feec30ae466c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 6968054464036196512, guid: 7d646be7d19c94d16a886dbe06203c60, type: 3}
+  barrel: {fileID: 6556448878158931062}
+  bulletSpeed: 1000
+  timeToDisappear: 5
+  canShootAtPlayer: 0
+  hits: 0

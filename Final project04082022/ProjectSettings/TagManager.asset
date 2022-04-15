@@ -8,6 +8,11 @@ TagManager:
   - bullet2
   - enemy
   - FxTemporaire
+  - Wall
+  - bullet1
+  - Ground
+  - NextLevel
+  - FirstLevel
   layers:
   - Default
   - TransparentFX

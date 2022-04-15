@@ -19,6 +19,8 @@ public class FreezeGun : MonoBehaviour
 
     public AudioClip clip1;
 
+    public float canShoot = 3.0f;
+    public float timesincelastShot = 0.0f;
 
     public float chargeTime = 3.0f;
     public float charge = 0.0f;
@@ -27,6 +29,8 @@ public class FreezeGun : MonoBehaviour
     public float range = 100f;
 
     public NavMeshAgent agent;
+
+    public bool hasShot;
 
 
     public int maxAmmo = 10;
@@ -38,7 +42,6 @@ public class FreezeGun : MonoBehaviour
     void Start()
     {
         audioSource1 = GetComponent<AudioSource>();
-
         currentAmmo = maxAmmo;
         audioSource1.clip = clip1;
 
@@ -53,11 +56,15 @@ public class FreezeGun : MonoBehaviour
 
         GunShoot();
 
+        Cooldown();
 
+        FreezeCool();
 
         if (Input.GetButton("Fire2") || (Input.GetButtonDown("Fire1")))
         {
+            hasShot = true;
             isShooting = true;
+
 
         }
         else
@@ -72,6 +79,10 @@ public class FreezeGun : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1") && !isShooting)
         {
+            if (timesincelastShot >= 0.1f)
+            {
+                return;
+            }
             audioSource1.PlayOneShot(clip1);
             Rigidbody bulletClone = (Rigidbody)Instantiate(bullet, barrel.position, transform.rotation);
             bulletClone.AddForce(transform.forward * bulletSpeed);
@@ -81,35 +92,55 @@ public class FreezeGun : MonoBehaviour
         }
     }
 
+    public void Cooldown()
+    {
+        if (hasShot == true)
+        {
+            timesincelastShot += Time.deltaTime;
+        }
+        if (timesincelastShot >= chargeTime)
+        {
+            hasShot = false;
+            timesincelastShot = 0;
+        }
+    }
+
     public void TimerIncrease()
     {
-        if(Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             charge += Time.deltaTime;
-
-
         }
     }
 
     void GunShoot()
     {
         if (charge >= chargeTime)
-            {
+        {
 
-                if(currentAmmo <= 0)
-                {
+            if (currentAmmo <= 0)
+            {
                 return;
-                }
-                audioSource1.PlayOneShot(clip1);
-                currentAmmo--;
-                Rigidbody bulletClone = (Rigidbody)Instantiate(bullet2, barrel.position, transform.rotation);
-                bulletClone.AddForce(transform.forward * bulletSpeed);
-                charge = 0;
-                StartCoroutine(DisappearCoroutine(bulletClone.gameObject));
-                GameObject flashClone = (GameObject)Instantiate(flash, barrel.position, transform.rotation);
-                StartCoroutine(DisappearflashCoroutine(flashClone.gameObject));
             }
-        
+            audioSource1.PlayOneShot(clip1);
+            currentAmmo--;
+            Rigidbody bulletClone = (Rigidbody)Instantiate(bullet2, barrel.position, transform.rotation);
+            bulletClone.AddForce(transform.forward * bulletSpeed);
+            charge = 0;
+            StartCoroutine(DisappearCoroutine(bulletClone.gameObject));
+            GameObject flashClone = (GameObject)Instantiate(flash, barrel.position, transform.rotation);
+            StartCoroutine(DisappearflashCoroutine(flashClone.gameObject));
+        }
+
+    }
+
+    void FreezeCool()
+    {
+        if (timesincelastShot >= canShoot)
+        {
+            isShooting = false;
+            timesincelastShot = 0.0f;
+        }
     }
 
     private IEnumerator DisappearCoroutine(GameObject bulletToDisappear)
